@@ -14,7 +14,8 @@ class Cards:
         self.db = self.client[dbname]
         self.cards_coll = self.db['cards']
 
-    def list_sets(self):
+    @property
+    def sets(self):
         """Return a list of all the card sets in the database.
         
         Args:
