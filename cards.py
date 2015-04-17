@@ -26,7 +26,7 @@ class Cards:
         """
         return self.cards_coll.distinct('set')
 
-    def cards_in_set(self, setname):
+    def retrieve_set(self, setname):
         """Return a list of all the cards in the given set.
         
         Args:
