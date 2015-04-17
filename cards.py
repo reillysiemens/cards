@@ -37,22 +37,16 @@ class Cards:
         """
         return list(self.cards_coll.find({'set': setname}))
 
-    def create_card(self, setname, color, text, creator):
+    def create_cards(self, cards):
         """Insert a new card with the given properties into the database.
         
         Args:
-          setname (str): Name of set the card will belong to.
-          color (str): Color the card will have.
-          text (str): Text that will appear on the card.
-          creator (str): Creator to attribute the card to.
+          cards: List of dictionaries with set, color, text, and creator keys.
 
         Returns:
           None
         """
-        card = {
-            'set': setname,
-            'color': color,
-            'text': text,
-            'creator': creator,
-        }
-        self.cards_coll.insert_one(card)
+
+        keys = ['set', 'color', 'text', 'creator']
+        filtered = [ { k: card[k] for k in keys if k in card} for card in cards]
+        self.cards_coll.insert_many(filtered)
