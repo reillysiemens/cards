@@ -10,9 +10,23 @@ class Cards:
         Args:
           dbname (str): Database name.
         """
-        self.client = MongoClient()
-        self.db = self.client[dbname]
-        self.cards_coll = self.db['cards']
+
+        self._client = MongoClient()
+        self._db = self._client[dbname]
+        self._collection = self._db[dbname]
+        self._keys = ['set', 'color', 'text', 'creator']
+
+    def _constrain_keys(self, dictionary):
+        """Constrain a given dictionary to contain only valid keys.
+
+        Args:
+            dictionary (dict): A potentially unconstrained dictionary.
+        Returns:
+            constrained (dict): A new dictionary containing only valid keys.
+        """
+
+        constrained = { k: dictionary[k] for k in self._keys if k in dictionary }
+        return constrained
 
     @property
     def sets(self):
@@ -24,7 +38,8 @@ class Cards:
         Returns:
           list: List of all card sets in the database.
         """
-        return self.cards_coll.distinct('set')
+
+        return self._collection.distinct('set')
 
     def retrieve_set(self, setname):
         """Return a list of all the cards in the given set.
@@ -35,7 +50,8 @@ class Cards:
         Returns:
           list: List of all cards in the the given set.
         """
-        return list(self.cards_coll.find({'set': setname}))
+
+        return list(self._collection.find({'set': setname}))
 
     def create_cards(self, cards):
         """Insert a new card with the given properties into the database.
@@ -47,9 +63,7 @@ class Cards:
           None
         """
 
-        keys = ['set', 'color', 'text', 'creator']
-        filtered = [ { k: card[k] for k in keys if k in card} for card in cards]
-        self.cards_coll.insert_many(filtered)
+        self._collection.insert_many([self._constrain_keys(card) for card in cards])
 
     def delete_cards(self, filterdict):
         """Delete all the cards matching a filter.
@@ -61,6 +75,4 @@ class Cards:
           None
         """
 
-        keys = ['set', 'color', 'text', 'creator']
-        filterdict = { k: filterdict[k] for k in keys if k in filterdict }
-        self.cards_coll.delete_many(filterdict)
+        self._collection.delete_many(self._constrain_keys(filterdict))
