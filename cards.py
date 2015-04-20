@@ -84,11 +84,11 @@ class Cards:
           filterdict (dict): Dictionary with set, color, text, and/or creator
                              keys to query collection against.
 
-          values (dict):     Dictionary with set, color, text, and/or creator
-                             keys with values that should be updated.
+          values (dict): Dictionary with set, color, text, and/or creator
+                         keys with values that should be updated.
 
-          mult (boolean):    Defaults to true. Whether to update all matches
-                             or just the first one found.
+          multiple (boolean): Defaults to true. Whether to update all matches
+                              or just the first one found.
 
         Returns:
           None
