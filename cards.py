@@ -77,8 +77,8 @@ class Cards:
 
         self._collection.delete_many(self._constrain_keys(filterdict))
 
-    def update_cards(self, filterdict, values, mult=True):
-        """Update cards matchint a filter.
+    def update_cards(self, filterdict, values, multiple=True):
+        """Update cards matching a filter.
 
         Args:
           filterdict (dict): Dictionary with set, color, text, and/or creator
@@ -96,4 +96,4 @@ class Cards:
 
         self._collection.update(self._constrain_keys(filterdict),
                                 {'$set': self._constrain_keys(values)},
-                                multi=mult)
+                                multi=multiple)
