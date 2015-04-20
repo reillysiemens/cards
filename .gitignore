@@ -55,3 +55,12 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Vim swap files
+*.swp
+
+# Virtualenv files
+bin/
+lib/
+include/
+pip-selfcheck.json
